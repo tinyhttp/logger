@@ -8,7 +8,8 @@
     "target": "ES2019",
     "preserveSymlinks": true,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "Node"
+    "moduleResolution": "Node",
+    "baseUrl": "."
   },
   "include": ["./src/*.ts"]
 }
