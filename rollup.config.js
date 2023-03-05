@@ -1,5 +1,5 @@
 import ts from '@rollup/plugin-typescript'
-import { dependencies } from './package.json'
+import pkg from './package.json' assert { type: 'json' }
 
 export default {
   input: 'src/index.ts',
@@ -10,5 +10,5 @@ export default {
     }
   ],
   plugins: [ts()],
-  external: [...Object.keys(dependencies)]
+  external: [...Object.keys(pkg.dependencies), 'http']
 }
