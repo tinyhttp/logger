@@ -62,7 +62,7 @@ new App()
 
 [npm-url]: https://npmjs.com/package/@tinyhttp/logger
 [github-actions]: https://github.com/tinyhttp/logger/actions
-[gh-actions-img]: https://img.shields.io/github/workflow/status/tinyhttp/logger/CI?style=for-the-badge&logo=github&label=&color=hotpink
+[gh-actions-img]: https://img.shields.io/github/actions/workflow/status/tinyhttp/logger/ci.yml?branch=master&style=for-the-badge&color=hotpink&label=&logo=github
 [cov-img]: https://img.shields.io/coveralls/github/tinyhttp/logger?style=for-the-badge&color=hotpink
 [cov-url]: https://coveralls.io/github/tinyhttp/logger
 [npm-img]: https://img.shields.io/npm/dt/@tinyhttp/logger?style=for-the-badge&color=hotpink
