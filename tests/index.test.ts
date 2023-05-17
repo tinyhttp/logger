@@ -1,14 +1,23 @@
 import { Context, suite, uvu } from 'uvu'
-import { logger } from '../src/index'
+import { LogLevel, logger } from '../src/index'
 import { cyan, red, magenta, bold } from 'colorette'
 import { makeFetch } from 'supertest-fetch'
 import { App } from '@tinyhttp/app'
 import expect from 'expect'
+import * as assert from 'uvu/assert'
+import { promises, constants as fsConstants, readFileSync, unlinkSync, existsSync } from 'fs'
 
 function describe(name: string, fn: (it: uvu.Test<Context>) => void) {
   const s = suite(name)
   fn(s)
   s.run()
+}
+
+function checkFileExists(file) {
+  return promises
+    .access(file, fsConstants.F_OK)
+    .then(() => true)
+    .catch(() => false)
 }
 
 describe('Logger tests', (it) => {
@@ -35,12 +44,32 @@ describe('Logger tests', (it) => {
     const originalConsoleLog = console.log
 
     console.log = (log: string) => {
-      expect(log.split(' ')[0]).toMatch(/[0-9]{2}:[0-9]{2}:[0-9]{2}/)
+      expect(log).toMatch(/[0-9]{2}:[0-9]{2}:[0-9]{2}/)
       console.log = originalConsoleLog
     }
 
     const app = new App()
     app.use(logger({ timestamp: true }))
+
+    const server = app.listen()
+
+    makeFetch(server)('/')
+      .expect(404)
+      .then(() => {
+        server.close()
+      })
+  })
+  it('should check for levels when supplied', () => {
+    const level = LogLevel.log
+    const originalConsoleLog = console.log
+
+    console.log = (log: string) => {
+      expect(log).toMatch(`[${level.toUpperCase()}] GET 404 Not Found /`)
+      console.log = originalConsoleLog
+    }
+
+    const app = new App()
+    app.use(logger({ timestamp: false, output: { callback: console.log, color: false, level: level } }))
 
     const server = app.listen()
 
@@ -66,6 +95,58 @@ describe('Logger tests', (it) => {
       .then(() => {
         server.close()
       })
+  })
+  describe('Log file tests', (it) => {
+    it('should check if log file and directory is created', async (test) => {
+      const filename = './log/tiny.log'
+
+      const app = new App()
+      app.use(
+        logger({
+          output: {
+            callback: console.log,
+            color: false,
+            filename: filename,
+            level: LogLevel.log
+          }
+        })
+      )
+      const server = app.listen()
+      await makeFetch(server)('/')
+        .expect(404)
+        .then(async () => {
+          assert.equal(await checkFileExists(filename), true)
+        })
+        .finally(() => server.close())
+    })
+    it('should read log file and check if logs are written', async (test) => {
+      const filename = './log/tiny.log'
+      const level = LogLevel.warn
+      const app = new App()
+      app.use(
+        logger({
+          output: {
+            callback: console.warn,
+            color: false,
+            filename: filename,
+            level: level
+          }
+        })
+      )
+
+      const server = app.listen()
+      await makeFetch(server)('/')
+        .expect(404)
+        .then(async () => {
+          assert.equal(await checkFileExists(filename), true)
+        })
+        .then(() => {
+          expect(readFileSync(filename).toString('utf-8').split('\n').slice(-2, -1)[0]).toMatch(
+            `[${level.toUpperCase()}] GET 404 Not Found /`
+          )
+        })
+        .finally(() => server.close())
+    })
   })
 
   describe('Color logs', (it) => {
