@@ -1,5 +1,4 @@
 import {
-  existsSync,
   accessSync,
   constants as fsConstants,
   writeFileSync,
@@ -9,48 +8,49 @@ import {
 } from 'fs'
 import { dirname as directoryname } from 'path'
 
+
+
 export class FileLogger {
-  private readonly filename: string
-  private readonly dirname: string
+  readonly #filename: string
+  readonly #dirname: string
   private writableStream: WriteStream
   constructor(filename: string) {
-    this.dirname = directoryname(filename)
-    this.filename = filename
-    this._stat()
-    this._createWritableStream()
+    this.#dirname = directoryname(filename)
+    this.#filename = filename
+    this.#_stat()
+    this.#_createWritableStream()
   }
 
-  private _stat() {
+  #fsAccess(filename: string, mode: number){
+    try {
+      accessSync(filename, mode);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  #_stat() {
     //check if file exists
-    if (existsSync(this.filename)) {
-      try {
-        // check for permissions
-        accessSync(this.filename)
-        return
-      } catch (error) {
-        throw new Error('Unable to read file. Check for permissions!')
-      }
-    } else {
+    if (!this.#fsAccess(this.#filename, fsConstants.W_OK)) {
       // check if directory exists
-      try {
-        accessSync(this.dirname)
-      } catch (error) {
-        mkdirSync(this.dirname, { recursive: true, mode: fsConstants.W_OK })
-      }
-      writeFileSync(this.filename, '')
+      if (!this.#fsAccess(this.#dirname, fsConstants.W_OK)) {
+        mkdirSync(this.#dirname, { recursive: true, mode: fsConstants.W_OK })
+      }         
+      writeFileSync(this.#filename, '')
       return
     }
   }
 
-  private _createWritableStream() {
-    this.writableStream = createWriteStream(this.filename, { flags: 'a' })
+  #_createWritableStream() {
+    this.writableStream = createWriteStream(this.#filename, { flags: 'a' })
   }
 
   toFile(stringToLog: string) {
     this.writableStream.write(stringToLog + '\n')
   }
 
-  private _endStream() {
+  #_endStream() {
     process.on('exit', (code) => {
       this.writableStream.close()
     })
