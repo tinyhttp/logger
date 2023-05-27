@@ -1,14 +1,5 @@
-import {
-  accessSync,
-  constants as fsConstants,
-  writeFileSync,
-  createWriteStream,
-  WriteStream,
-  mkdirSync
-} from 'fs'
+import { accessSync, constants as fsConstants, writeFileSync, createWriteStream, WriteStream, mkdirSync } from 'fs'
 import { dirname as directoryname } from 'path'
-
-
 
 export class FileLogger {
   readonly #filename: string
@@ -21,12 +12,12 @@ export class FileLogger {
     this.#_createWritableStream()
   }
 
-  #fsAccess(filename: string, mode: number){
+  #fsAccess(filename: string, mode: number) {
     try {
-      accessSync(filename, mode);
-      return true;
+      accessSync(filename, mode)
+      return true
     } catch (error) {
-      return false;
+      return false
     }
   }
 
@@ -36,7 +27,7 @@ export class FileLogger {
       // check if directory exists
       if (!this.#fsAccess(this.#dirname, fsConstants.W_OK)) {
         mkdirSync(this.#dirname, { recursive: true, mode: fsConstants.W_OK })
-      }         
+      }
       writeFileSync(this.#filename, '')
       return
     }

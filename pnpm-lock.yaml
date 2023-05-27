@@ -20,7 +20,7 @@ devDependencies:
     version: 17.6.3
   '@rollup/plugin-typescript':
     specifier: ^11.1.1
-    version: 11.1.1(rollup@3.21.7)(typescript@5.0.4)
+    version: 11.1.1(rollup@3.21.7)(tslib@2.5.2)(typescript@5.0.4)
   '@tinyhttp/app':
     specifier: 2.0.32
     version: 2.0.32
@@ -51,6 +51,9 @@ devDependencies:
   husky:
     specifier: ^8.0.3
     version: 8.0.3
+  install:
+    specifier: ^0.13.0
+    version: 0.13.0
   prettier:
     specifier: ^2.8.8
     version: 2.8.8
@@ -60,6 +63,9 @@ devDependencies:
   supertest-fetch:
     specifier: ^1.5.0
     version: 1.5.0
+  tslib:
+    specifier: ^2.5.2
+    version: 2.5.2
   tsm:
     specifier: ^2.3.0
     version: 2.3.0
@@ -431,7 +437,7 @@ packages:
       fastq: 1.15.0
     dev: true
 
-  /@rollup/plugin-typescript@11.1.1(rollup@3.21.7)(typescript@5.0.4):
+  /@rollup/plugin-typescript@11.1.1(rollup@3.21.7)(tslib@2.5.2)(typescript@5.0.4):
     resolution: {integrity: sha512-Ioir+x5Bejv72Lx2Zbz3/qGg7tvGbxQZALCLoJaGrkNXak/19+vKgKYJYM3i/fJxvsb23I9FuFQ8CUBEfsmBRg==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
@@ -447,6 +453,7 @@ packages:
       '@rollup/pluginutils': 5.0.2(rollup@3.21.7)
       resolve: 1.22.2
       rollup: 3.21.7
+      tslib: 2.5.2
       typescript: 5.0.4
     dev: true
 
@@ -1962,6 +1969,11 @@ packages:
     resolution: {integrity: sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==}
     dev: true
 
+  /install@0.13.0:
+    resolution: {integrity: sha512-zDml/jzr2PKU9I8J/xyZBQn8rPCAY//UOYNmR01XwNwyfhEWObo2SWfSl1+0tm1u6PhxLwDnfsT/6jB7OUxqFA==}
+    engines: {node: '>= 0.10'}
+    dev: true
+
   /ipaddr.js@2.0.1:
     resolution: {integrity: sha512-1qTgH9NG+IIJ4yfKs2e6Pp1bZg8wbDbKHT21HrLIeYBTRLgMYKnMTPAuI3Lcs61nfx5h1xlXnbJtH1kX5/d/ng==}
     engines: {node: '>= 10'}
@@ -2886,6 +2898,10 @@ packages:
 
   /tslib@1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
+    dev: true
+
+  /tslib@2.5.2:
+    resolution: {integrity: sha512-5svOrSA2w3iGFDs1HibEVBGbDrAY82bFQ3HZ3ixB+88nsbsWQoKqDRb5UBYAUPEzbBn6dAp5gRNXglySbx1MlA==}
     dev: true
 
   /tsm@2.3.0:

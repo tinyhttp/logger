@@ -54,9 +54,11 @@
     "eslint-plugin-prettier": "^4.2.1",
     "expect": "^29.5.0",
     "husky": "^8.0.3",
+    "install": "^0.13.0",
     "prettier": "^2.8.8",
     "rollup": "^3.21.7",
     "supertest-fetch": "^1.5.0",
+    "tslib": "^2.5.2",
     "tsm": "^2.3.0",
     "typescript": "^5.0.4",
     "uvu": "^0.5.6"
