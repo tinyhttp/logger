@@ -56,7 +56,7 @@ To Log a level, use the enum `LogLevel`
 
 ```ts
 import { App } from '@tinyhttp/app'
-import { logger } from '@tinyhttp/logger'
+import { logger, LogLevel } from '@tinyhttp/logger'
 
 new App()
   .use(
