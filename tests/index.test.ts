@@ -169,7 +169,9 @@ describe('Logger tests', (it) => {
 
         const server = app.listen()
 
-        await makeFetch(server)('/').expect(status)
+        await makeFetch(server)('/')
+          .expect(status)
+          .then(async () => await server.close())
       }
     }
 

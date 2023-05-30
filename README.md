@@ -82,7 +82,7 @@ new App()
     logger({
       methods: ['GET', 'POST'],
       timestamp: { format: 'HH:mm:ss' },
-      output: { callback: console.log, color: false, filename: "./log/tiny.log" }
+      output: { callback: console.log, color: false, filename: './log/tiny.log' }
     })
   )
   .get('/', (req, res) => res.send('Hello world'))
