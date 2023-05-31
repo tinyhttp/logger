@@ -2,12 +2,23 @@ import { cyan, red, magenta, bold } from 'colorette'
 import statusEmoji from 'http-status-emojis'
 import dayjs from 'dayjs'
 import { METHODS, ServerResponse as Response, IncomingMessage as Request } from 'http'
+import { FileLogger } from './filelogger'
+
+export enum LogLevel {
+  error = 'error',
+  warn = 'warn',
+  trace = 'trace',
+  info = 'info',
+  log = 'log'
+}
 
 export interface LoggerOptions {
   methods?: string[]
   output?: {
     color: boolean
+    filename?: string
     callback: (string: string) => void
+    level?: LogLevel
   }
   timestamp?: boolean | { format?: string }
   emoji?: boolean
@@ -24,12 +35,12 @@ const compileArgs = (
 ) => {
   const { method } = req
   const { statusCode } = res
-
   const url = req.originalUrl || req.url
-
   const methods = options.methods ?? METHODS
   const timestamp = options.timestamp ?? false
   const emojiEnabled = options.emoji
+  const level = options.output && options.output.level ? options.output.level : null
+  if (level) args.push('[' + level.toUpperCase() + ']')
 
   if (methods.includes(method) && timestamp) {
     args.push(
@@ -52,34 +63,41 @@ const compileArgs = (
 
 export const logger = (options: LoggerOptions = {}) => {
   const methods = options.methods ?? METHODS
-  const output = options.output ?? { callback: console.log, color: true }
-
+  const output = options.output ?? { callback: console.log, color: true, level: null }
+  let filelogger = null
+  if (options.output && options.output.filename) {
+    filelogger = new FileLogger(options.output.filename)
+  }
   return (req: Request, res: Response, next?: () => void) => {
     res.on('finish', () => {
       const args: (string | number)[] = []
-
+      // every time
       if (methods.includes(req.method)) {
         const s = res.statusCode.toString()
-
+        let stringToLog = ''
         if (!output.color) {
           compileArgs(args, req, res, options)
           const m = args.join(' ')
-          output.callback(m)
+          stringToLog = m
         } else {
           switch (s[0]) {
             case '2':
               compileArgs(args, req, res, options, cyan(bold(s)), cyan(res.statusMessage))
-              output.callback(args.join(' '))
+              stringToLog = args.join(' ')
               break
             case '4':
               compileArgs(args, req, res, options, red(bold(s)), red(res.statusMessage))
-              output.callback(args.join(' '))
+              stringToLog = args.join(' ')
               break
             case '5':
               compileArgs(args, req, res, options, magenta(bold(s)), magenta(res.statusMessage))
-              output.callback(args.join(' '))
+              stringToLog = args.join(' ')
               break
           }
+        }
+        output.callback(stringToLog)
+        if (filelogger) {
+          filelogger.toFile(stringToLog)
         }
       }
     })

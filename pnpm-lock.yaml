@@ -20,7 +20,7 @@ devDependencies:
     version: 17.6.3
   '@rollup/plugin-typescript':
     specifier: ^11.1.1
-    version: 11.1.1(rollup@3.23.0)(typescript@5.0.4)
+    version: 11.1.1(rollup@3.23.0)(tslib@2.5.2)(typescript@5.0.4)
   '@tinyhttp/app':
     specifier: 2.1.0
     version: 2.1.0
@@ -60,6 +60,9 @@ devDependencies:
   supertest-fetch:
     specifier: ^1.5.0
     version: 1.5.0
+  tslib:
+    specifier: ^2.5.2
+    version: 2.5.2
   tsm:
     specifier: ^2.3.0
     version: 2.3.0
@@ -431,7 +434,7 @@ packages:
       fastq: 1.15.0
     dev: true
 
-  /@rollup/plugin-typescript@11.1.1(rollup@3.23.0)(typescript@5.0.4):
+  /@rollup/plugin-typescript@11.1.1(rollup@3.23.0)(tslib@2.5.2)(typescript@5.0.4):
     resolution: {integrity: sha512-Ioir+x5Bejv72Lx2Zbz3/qGg7tvGbxQZALCLoJaGrkNXak/19+vKgKYJYM3i/fJxvsb23I9FuFQ8CUBEfsmBRg==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
@@ -447,6 +450,7 @@ packages:
       '@rollup/pluginutils': 5.0.2(rollup@3.23.0)
       resolve: 1.22.2
       rollup: 3.23.0
+      tslib: 2.5.2
       typescript: 5.0.4
     dev: true
 
@@ -2885,6 +2889,10 @@ packages:
 
   /tslib@1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
+    dev: true
+
+  /tslib@2.5.2:
+    resolution: {integrity: sha512-5svOrSA2w3iGFDs1HibEVBGbDrAY82bFQ3HZ3ixB+88nsbsWQoKqDRb5UBYAUPEzbBn6dAp5gRNXglySbx1MlA==}
     dev: true
 
   /tsm@2.3.0:

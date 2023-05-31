@@ -52,6 +52,43 @@ new App()
   .listen(3000)
 ```
 
+To Log a level, use the enum `LogLevel`
+
+```ts
+import { App } from '@tinyhttp/app'
+import { logger, LogLevel } from '@tinyhttp/logger'
+
+new App()
+  .use(
+    logger({
+      methods: ['GET', 'POST'],
+      timestamp: { format: 'HH:mm:ss' },
+      output: { callback: console.log, color: false, level: LogLevel.warn }
+    })
+  )
+  .get('/', (req, res) => res.send('Hello world'))
+  .listen(3000)
+```
+
+This also includes a simple file logger. To stream to a file, simply supply the filename in the options. Supported file names innclude
+`./file.log` or `./log/tiny.log`
+
+```ts
+import { App } from '@tinyhttp/app'
+import { logger } from '@tinyhttp/logger'
+
+new App()
+  .use(
+    logger({
+      methods: ['GET', 'POST'],
+      timestamp: { format: 'HH:mm:ss' },
+      output: { callback: console.log, color: false, filename: './log/tiny.log' }
+    })
+  )
+  .get('/', (req, res) => res.send('Hello world'))
+  .listen(3000)
+```
+
 ## Alternatives
 
 - [Pino](https://getpino.io) - super fast, all natural json logger.
