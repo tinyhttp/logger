@@ -6,6 +6,7 @@ import { App } from '@tinyhttp/app'
 import expect from 'expect'
 import * as assert from 'uvu/assert'
 import { promises, constants as fsConstants, readFileSync, unlinkSync, existsSync } from 'fs'
+import { resolve } from 'path'
 
 function describe(name: string, fn: (it: uvu.Test<Context>) => void) {
   const s = suite(name)
@@ -15,7 +16,7 @@ function describe(name: string, fn: (it: uvu.Test<Context>) => void) {
 
 function checkFileExists(file) {
   return promises
-    .access(file, fsConstants.F_OK)
+    .access(file)
     .then(() => true)
     .catch(() => false)
 }
@@ -98,7 +99,7 @@ describe('Logger tests', (it) => {
   })
   describe('Log file tests', (it) => {
     it('should check if log file and directory is created', async (test) => {
-      const filename = './log/tiny.log'
+      const filename = './tests/tiny.log'
 
       const app = new App()
       app.use(
@@ -120,7 +121,7 @@ describe('Logger tests', (it) => {
         .finally(() => server.close())
     })
     it('should read log file and check if logs are written', async (test) => {
-      const filename = './log/tiny.log'
+      const filename = './logs/test1/tiny.log'
       const level = LogLevel.warn
       const app = new App()
       app.use(

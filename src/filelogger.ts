@@ -1,4 +1,4 @@
-import { accessSync, constants as fsConstants, writeFileSync, createWriteStream, WriteStream, mkdirSync } from 'fs'
+import { accessSync, writeFileSync, createWriteStream, WriteStream, mkdirSync } from 'fs'
 import { dirname as directoryname } from 'path'
 
 export class FileLogger {
@@ -10,9 +10,10 @@ export class FileLogger {
     this.#filename = filename
     this.#_stat()
     this.#_createWritableStream()
+    this.#_endStream()
   }
 
-  #fsAccess(filename: string, mode: number) {
+  #fsAccess(filename: string, mode?: number) {
     try {
       accessSync(filename, mode)
       return true
@@ -23,11 +24,13 @@ export class FileLogger {
 
   #_stat() {
     //check if file exists
-    if (!this.#fsAccess(this.#filename, fsConstants.W_OK)) {
+    if (!this.#fsAccess(this.#filename)) {
       // check if directory exists
-      if (!this.#fsAccess(this.#dirname, fsConstants.W_OK)) {
-        mkdirSync(this.#dirname, { recursive: true, mode: fsConstants.W_OK })
+      if (!this.#fsAccess(this.#dirname)) {
+        // create the directory
+        mkdirSync(this.#dirname, { recursive: true })
       }
+      // create the file and write an empty string to it
       writeFileSync(this.#filename, '')
       return
     }
@@ -42,21 +45,21 @@ export class FileLogger {
   }
 
   #_endStream() {
-    process.on('exit', (code) => {
+    process.on('exit', () => {
       this.writableStream.close()
     })
 
-    process.on('SIGTERM', (signal) => {
-      this.writableStream.close()
-      process.exit(0)
-    })
-
-    process.on('SIGINT', (signal) => {
+    process.on('SIGTERM', () => {
       this.writableStream.close()
       process.exit(0)
     })
 
-    process.on('uncaughtException', (err) => {
+    process.on('SIGINT', () => {
+      this.writableStream.close()
+      process.exit(0)
+    })
+
+    process.on('uncaughtException', () => {
       this.writableStream.close()
       process.exit(1)
     })
