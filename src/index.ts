@@ -1,8 +1,8 @@
 import { cyan, red, magenta, bold } from 'colorette'
 import statusEmoji from 'http-status-emojis'
 import dayjs from 'dayjs'
-import { METHODS, ServerResponse as Response, IncomingMessage as Request } from 'http'
-import { FileLogger } from './filelogger'
+import { METHODS, ServerResponse as Response, IncomingMessage as Request } from 'node:http'
+import { FileLogger } from './filelogger.js'
 
 export enum LogLevel {
   error = 'error',
@@ -27,7 +27,7 @@ export interface LoggerOptions {
 
 const compileArgs = (
   args: (string | number)[],
-  req: Request & Partial<{ originalUrl: string; ip: any }>,
+  req: Request & Partial<{ originalUrl: string; ip: string }>,
   res: Response,
   options: LoggerOptions = {},
   status?: string,

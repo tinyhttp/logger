@@ -1,5 +1,5 @@
-import { accessSync, writeFileSync, createWriteStream, WriteStream, mkdirSync } from 'fs'
-import { dirname as directoryname } from 'path'
+import { accessSync, writeFileSync, createWriteStream, WriteStream, mkdirSync } from 'node:fs'
+import { dirname as directoryname } from 'node:path'
 
 export class FileLogger {
   readonly #filename: string

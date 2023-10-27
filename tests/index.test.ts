@@ -1,27 +1,23 @@
-import { Context, suite, uvu } from 'uvu'
+import { describe, it } from 'node:test'
 import { LogLevel, logger } from '../src/index'
 import { cyan, red, magenta, bold } from 'colorette'
 import { makeFetch } from 'supertest-fetch'
 import { App } from '@tinyhttp/app'
-import expect from 'expect'
-import * as assert from 'uvu/assert'
-import { promises, constants as fsConstants, readFileSync, unlinkSync, existsSync } from 'fs'
-import { resolve } from 'path'
+import { expect } from 'expect'
+import * as assert from 'node:assert/strict'
+import { promises, readFileSync } from 'node:fs'
+import { rm } from 'node:fs/promises'
 
-function describe(name: string, fn: (it: uvu.Test<Context>) => void) {
-  const s = suite(name)
-  fn(s)
-  s.run()
+async function checkFileExists(file: string) {
+  try {
+    await promises.access(file)
+    return true
+  } catch {
+    return false
+  }
 }
 
-function checkFileExists(file) {
-  return promises
-    .access(file)
-    .then(() => true)
-    .catch(() => false)
-}
-
-describe('Logger tests', (it) => {
+describe('Logger tests', () => {
   it('should use the timestamp format specified in the `format` property', () => {
     const originalConsoleLog = console.log
 
@@ -97,8 +93,8 @@ describe('Logger tests', (it) => {
         server.close()
       })
   })
-  describe('Log file tests', (it) => {
-    it('should check if log file and directory is created', async (test) => {
+  describe('Log file tests', () => {
+    it('should check if log file and directory is created', async () => {
       const filename = './tests/tiny.log'
 
       const app = new App()
@@ -118,9 +114,12 @@ describe('Logger tests', (it) => {
         .then(async () => {
           assert.equal(await checkFileExists(filename), true)
         })
-        .finally(() => server.close())
+        .finally(async () => {
+          await rm(filename)
+          server.close()
+        })
     })
-    it('should read log file and check if logs are written', async (test) => {
+    it('should read log file and check if logs are written', async () => {
       const filename = './logs/test1/tiny.log'
       const level = LogLevel.warn
       const app = new App()
@@ -146,11 +145,14 @@ describe('Logger tests', (it) => {
             `[${level.toUpperCase()}] GET 404 Not Found /`
           )
         })
-        .finally(() => server.close())
+        .finally(async () => {
+          await rm(filename)
+          server.close()
+        })
     })
   })
 
-  describe('Color logs', (it) => {
+  describe('Color logs', () => {
     const createColorTest = (status: number, color: string) => {
       return async () => {
         const customOutput = (log: string) => {
@@ -188,7 +190,7 @@ describe('Logger tests', (it) => {
       createColorTest(500, 'magenta')()
     })
   })
-  describe('Badge Log', (it) => {
+  describe('Badge Log', () => {
     it('should display emoji', () => {
       const app = new App()
 

@@ -1,19 +1,14 @@
 {
   "compilerOptions": {
-    "rootDir": "src",
+    "module": "NodeNext",
+    "target": "ES2022",
+    "moduleResolution": "NodeNext",
+    "moduleDetection": "force",
+    "strict": false,
+    "downlevelIteration": true,
+    "skipLibCheck": true,
     "outDir": "dist",
-    "declaration": true,
-    "declarationDir": "dist",
-    "module": "ESNext",
-    "target": "ES2019",
-    "preserveSymlinks": true,
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "Node",
-    "baseUrl": ".",
-    "declarationMap": true,
-    "composite": true,
-    "sourceMap": true,
-    "alwaysStrict": true
+    "declaration": true
   },
-  "include": ["./src/*.ts"]
+  "include": ["src"]
 }
