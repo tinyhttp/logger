@@ -12,7 +12,17 @@
     "node": ">=14.18 || >=16.20"
   },
   "types": "./dist/index.d.ts",
-  "exports": "./dist/index.js",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./filelogger": {
+      "import": "./dist/filelogger.js",
+      "types": "./dist/filelogger.d.ts"
+    }
+  },
   "keywords": [
     "tinyhttp",
     "node.js",
