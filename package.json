@@ -26,9 +26,9 @@
     "dist"
   ],
   "dependencies": {
-    "colorette": "latest",
-    "dayjs": "latest",
-    "http-status-emojis": "latest"
+    "colorette": "^2.0.20",
+    "dayjs": "^1.11.10",
+    "http-status-emojis": "^2.2.0"
   },
   "scripts": {
     "build": "tsc",
