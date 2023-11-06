@@ -91,7 +91,6 @@ new App()
 
 ## Alternatives
 
-- [@tinyhttp/logger](/mw/logger) - Simple HTTP logger for tinyhttp
 - [Pino HTTP](https://github.com/pinojs/pino-http) - high-speed HTTP logger for Node.js
 - [chrona](https://github.com/xambassador/chrona) - Simple HTTP request logger middleware for express.js inspired from koa-logger, written in typescript.
 
