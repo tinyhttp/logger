@@ -111,7 +111,7 @@ describe('Logger tests', () => {
       const server = app.listen()
       await makeFetch(server)('/')
         .expect(404)
-        .then(async () => {
+        .then<void, void>(async () => {
           assert.equal(await checkFileExists(filename), true)
         })
         .finally(async () => {
