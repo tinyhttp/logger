@@ -38,7 +38,7 @@
     "test:coverage": "vitest run --dir tests --coverage",
     "check": "biome check",
     "check:fix": "biome check --write",
-    "prepare": "husky"
+    "prepare": "bunx husky"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
