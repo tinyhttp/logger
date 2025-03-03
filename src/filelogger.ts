@@ -1,4 +1,4 @@
-import { accessSync, writeFileSync, createWriteStream, WriteStream, mkdirSync } from 'node:fs'
+import { type WriteStream, accessSync, createWriteStream, mkdirSync, writeFileSync } from 'node:fs'
 import { dirname as directoryname } from 'node:path'
 
 export class FileLogger {
@@ -41,7 +41,7 @@ export class FileLogger {
   }
 
   toFile(stringToLog: string) {
-    this.writableStream.write(stringToLog + '\n')
+    this.writableStream.write(`${stringToLog}\n`)
   }
 
   #_endStream() {

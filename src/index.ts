@@ -1,7 +1,7 @@
-import { cyan, red, magenta, bold } from 'colorette'
-import statusEmoji from 'http-status-emojis'
+import { METHODS, type IncomingMessage as Request, type ServerResponse as Response } from 'node:http'
+import { bold, cyan, magenta, red } from 'colorette'
 import dayjs from 'dayjs'
-import { METHODS, ServerResponse as Response, IncomingMessage as Request } from 'node:http'
+import statusEmoji from 'http-status-emojis'
 import { FileLogger } from './filelogger.js'
 
 export enum LogLevel {
@@ -39,8 +39,8 @@ const compileArgs = (
   const methods = options.methods ?? METHODS
   const timestamp = options.timestamp ?? false
   const emojiEnabled = options.emoji
-  const level = options.output && options.output.level ? options.output.level : null
-  if (level) args.push('[' + level.toUpperCase() + ']')
+  const level = options.output?.level ? options.output.level : null
+  if (level) args.push(`[${level.toUpperCase()}]`)
 
   if (methods.includes(method) && timestamp) {
     args.push(
@@ -65,7 +65,7 @@ export const logger = (options: LoggerOptions = {}) => {
   const methods = options.methods ?? METHODS
   const output = options.output ?? { callback: console.log, color: true, level: null }
   let filelogger = null
-  if (options.output && options.output.filename) {
+  if (options.output?.filename) {
     filelogger = new FileLogger(options.output.filename)
   }
   return (req: Request, res: Response, next?: () => void) => {

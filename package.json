@@ -23,21 +23,13 @@
       "types": "./dist/filelogger.d.ts"
     }
   },
-  "keywords": [
-    "tinyhttp",
-    "node.js",
-    "web framework",
-    "web",
-    "backend"
-  ],
+  "keywords": ["tinyhttp", "node.js", "web framework", "web", "backend"],
   "author": "v1rtl",
   "license": "MIT",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "dependencies": {
     "colorette": "^2.0.20",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.13",
     "http-status-emojis": "^2.2.0"
   },
   "scripts": {
@@ -45,28 +37,22 @@
     "test": "tsx tests/index.test.ts",
     "test:coverage": "c8 tsx --test tests/index.test.ts",
     "test:report": "c8 report --reporter=text-lcov > lcov.info",
-    "lint": "eslint . --ext=ts",
-    "format": "prettier --check \"./**/*.{ts,md}\"",
-    "format:fix": "prettier --write \"./**/*.{ts,md}\"",
+    "check": "biome check",
+    "check:fix": "biome check --write",
     "prepare": "husky install"
   },
   "devDependencies": {
-    "@commitlint/cli": "^18.2.0",
-    "@commitlint/config-conventional": "^18.1.0",
-    "@tinyhttp/app": "^2.2.0",
-    "@types/node": "^20.8.9",
-    "@typescript-eslint/eslint-plugin": "^6.9.0",
-    "@typescript-eslint/parser": "^6.9.0",
-    "bun-types": "^1.0.7",
+    "@biomejs/biome": "^1.9.4",
+    "@commitlint/cli": "^18.6.1",
+    "@commitlint/config-conventional": "^18.6.3",
+    "@tinyhttp/app": "^2.5.2",
+    "@types/node": "^20.17.22",
+    "bun-types": "^1.2.4",
     "c8": "^8.0.1",
-    "eslint": "^8.52.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.1",
     "expect": "^29.7.0",
     "husky": "^8.0.3",
-    "prettier": "^3.0.3",
     "supertest-fetch": "^1.5.0",
     "tsx": "^3.14.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.8.2"
   }
 }

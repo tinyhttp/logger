@@ -1,12 +1,12 @@
-import { describe, it } from 'node:test'
-import { LogLevel, logger } from '../src/index'
-import { cyan, red, magenta, bold } from 'colorette'
-import { makeFetch } from 'supertest-fetch'
-import { App } from '@tinyhttp/app'
-import { expect } from 'expect'
 import * as assert from 'node:assert/strict'
 import { promises, readFileSync } from 'node:fs'
 import { rm } from 'node:fs/promises'
+import { describe, it } from 'node:test'
+import { App } from '@tinyhttp/app'
+import { bold, cyan, magenta, red } from 'colorette'
+import { expect } from 'expect'
+import { makeFetch } from 'supertest-fetch'
+import { LogLevel, logger } from '../src/index'
 
 async function checkFileExists(file: string) {
   try {
