@@ -39,7 +39,7 @@
     "test:report": "c8 report --reporter=text-lcov > lcov.info",
     "check": "biome check",
     "check:fix": "biome check --write",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
