@@ -15,7 +15,6 @@
         "@tinyhttp/app": "^2.5.2",
         "@types/node": "^20.17.22",
         "@vitest/coverage-v8": "^3.0.7",
-        "@vitest/spy": "^3.0.7",
         "husky": "^9.1.7",
         "supertest-fetch": "^2.0.0",
         "typescript": "^5.8.2",
