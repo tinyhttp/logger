@@ -12,18 +12,19 @@ export enum LogLevel {
   log = 'log'
 }
 
-export interface LoggerOptions {
-  methods?: string[]
-  output?: {
+export type LoggerOptions = Partial<{
+  methods: string[]
+  output: {
     color: boolean
     filename?: string
     callback: (string: string) => void
     level?: LogLevel
   }
-  timestamp?: boolean | { format?: string }
-  emoji?: boolean
-  ip?: boolean
-}
+  timestamp: boolean | { format?: string }
+  emoji: boolean
+  ip: boolean
+  ignore: string[]
+}>
 
 const compileArgs = (
   args: (string | number)[],
@@ -63,6 +64,7 @@ const compileArgs = (
 
 export const logger = (options: LoggerOptions = {}) => {
   const methods = options.methods ?? METHODS
+  const ignore = options.ignore ?? []
   const output = options.output ?? { callback: console.log, color: true, level: null }
   let filelogger = null
   if (options.output?.filename) {
@@ -71,8 +73,7 @@ export const logger = (options: LoggerOptions = {}) => {
   return (req: Request, res: Response, next?: () => void) => {
     res.on('finish', () => {
       const args: (string | number)[] = []
-      // every time
-      if (methods.includes(req.method)) {
+      if (methods.includes(req.method) && !ignore.some((url) => req.url.startsWith(url))) {
         const s = res.statusCode.toString()
         let stringToLog = ''
         if (!output.color) {

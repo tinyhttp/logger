@@ -8,8 +8,7 @@
     "downlevelIteration": true,
     "skipLibCheck": true,
     "outDir": "dist",
-    "declaration": true,
-    "lib": ["ESNext.Promise"]
+    "declaration": true
   },
   "include": ["src"]
 }
