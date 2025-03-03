@@ -73,7 +73,6 @@ export const logger = (options: LoggerOptions = {}) => {
   return (req: Request, res: Response, next?: () => void) => {
     res.on('finish', () => {
       const args: (string | number)[] = []
-
       if (methods.includes(req.method) && !ignore.some((url) => req.url.startsWith(url))) {
         const s = res.statusCode.toString()
         let stringToLog = ''

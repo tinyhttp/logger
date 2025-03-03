@@ -2,11 +2,11 @@ import * as assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { access, rm } from 'node:fs/promises'
 import type { AddressInfo } from 'node:net'
-import { describe, it, mock } from 'node:test'
 import { App } from '@tinyhttp/app'
+import * as mock from '@vitest/spy'
 import { bold, cyan, magenta, red } from 'colorette'
-import { expect } from 'expect'
 import { makeFetch } from 'supertest-fetch'
+import { describe, expect, it, vi } from 'vitest'
 import { LogLevel, logger } from '../src/index.ts'
 
 async function checkFileExists(file: string) {
@@ -99,35 +99,37 @@ it('should ignore route paths listed in the "ignore" option', async () => {
 
   const logs: string[] = []
 
-  const callback = mock.fn((path: string) => {
+  const callback = vi.fn((path: string) => {
     logs.push(path)
   })
 
-  app.use(
-    logger({
-      output: {
-        color: false,
-        level: undefined,
-        callback
-      },
-      ignore: ['/ignore']
-    })
-  )
+  app.use(logger({ output: { color: false, level: undefined, callback }, ignore: ['/ignore'] }))
 
   const server = app.listen()
 
-  const address = (server.address() as AddressInfo).port
+  const fetch = makeFetch(server)
 
-  const baseUrl = `http://localhost:${address}`
+  fetch('/ignor')
+    .expect(404)
+    .then(() => {
+      fetch('/ignore')
+        .expect(404)
+        .then(() => {
+          fetch('/path/ignore')
+            .expect(404)
+            .then(() => {
+              fetch('/ignore?query=string')
+                .expect(404)
+                .then(() => {
+                  expect(callback).toHaveBeenCalledTimes(2)
+                  expect(logs).toEqual(['GET 404 Not Found /ignor', 'GET 404 Not Found /path/ignore'])
 
-  await fetch(new URL('/ignor', baseUrl))
-  await fetch(new URL('/ignore', baseUrl))
-  await fetch(new URL('/ignore/path', baseUrl))
-  await fetch(new URL('/ignore?query=string', baseUrl))
-  await fetch(new URL('/path/ignore', baseUrl))
-
-  expect(callback.mock.callCount()).toEqual(2)
-  expect(logs).toEqual(['GET 404 Not Found /ignor', 'GET 404 Not Found /path/ignore'])
+                  vi.clearAllMocks()
+                  server.close()
+                })
+            })
+        })
+    })
 })
 
 describe('Log file tests', () => {
